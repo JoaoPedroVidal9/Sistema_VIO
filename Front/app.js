@@ -40,7 +40,8 @@ document
         // Executa a resposta de sucesso retorna ao usuario final
 
         //Exibe um alerta para o usuario final (front) com o nome do usuário que acabou de ser cadastrado
-        alert("Usuário cadastrado com sucesso! " + data.user.name);
+        // alert("Usuário cadastrado com sucesso! " + data.user.name);
+        alert(data.message);
 
         //Exibi um log no terminal para o desenvolvedor
         console.log("Usuario criado:", data.user);
