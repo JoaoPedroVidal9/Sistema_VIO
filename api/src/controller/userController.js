@@ -1,5 +1,4 @@
-let users = [];
-
+const connect = require("../db/connect");
 module.exports = class userController {
   static async createUser(req, res) {
     const { cpf, email, password, name } = req.body;
@@ -14,27 +13,42 @@ module.exports = class userController {
       });
     } else if (!email.includes("@")) {
       return res.status(400).json({ error: "Email inválido. Deve conter @" });
+    } else {
+      // Construção da query INSERT
+      const query = `INSERT INTO usuario(name, cpf, email, password) VALUES ('${name}', '${cpf}', '${email}', '${password}');`;
+
+      // Executando a query INSERT
+      try {
+        connect.query(query, function (err) {
+          if (err) {
+            console.log(err);
+            console.log(err.code);
+            if (err.code === "ER_DUP_ENTRY") {
+              return res
+                .status(400)
+                .json({ error: "O email já está vinculado a outro usuário" });
+            } else {
+              return res
+                .status(500)
+                .json({ error: "Erro Interno Do Servidor" });
+            }
+          } else {
+            return res
+              .status(201)
+              .json({ message: "Usuário criado com sucesso" });
+          }
+        });
+      } catch (error) {
+        console.error(error);
+        return res
+        .status(500)
+        .json({ error: "Erro interno do servidor" });
+      }
     }
-
-    // Verifica se já existe um usuário com o mesmo CPF
-    const existingUser = users.find((user) => user.cpf === cpf);
-    if (existingUser) {
-      return res.status(400).json({ error: "CPF já cadastrado" });
-    }
-
-    // Cria e adiciona novo usuário
-    const newUser = { cpf, email, password, name };
-    users.push(newUser);
-
-    return res
-      .status(201)
-      .json({ message: "Usuário criado com sucesso", user: newUser });
   }
 
   static async getAllUsers(req, res) {
-    return res
-      .status(200)
-      .json({ message: "Obtendo todos os usuários", users });
+    return res.status(200).json({ message: "Obtendo todos os usuários" });
   }
 
   static async updateUser(req, res) {
@@ -50,9 +64,7 @@ module.exports = class userController {
     const userIndex = users.findIndex((user) => user.cpf === cpf);
     //Se o usuario não for encontrado userIndex se torna -1
     if (userIndex === -1) {
-      return res
-        .status(400)
-        .json({ error: "Usuário não encontrado" });
+      return res.status(400).json({ error: "Usuário não encontrado" });
     }
 
     //Atualiza os dados do usuario no Array 'users' de index userIndex
@@ -72,16 +84,12 @@ module.exports = class userController {
     const userDeleted = users.findIndex((user) => user.cpf === userId);
     //Se o usuario não for encontrado userDeleted se torna -1
     if (userDeleted === -1) {
-      return res
-        .status(400)
-        .json({ error: "Usuário não encontrado" });
+      return res.status(400).json({ error: "Usuário não encontrado" });
     }
 
     //Removendo o usuario do Array 'users'
     users.splice(userDeleted, 1);
 
-    return res
-        .status(200)
-        .json({message:"Usuário deletado com sucesso"});
+    return res.status(200).json({ message: "Usuário deletado com sucesso" });
   }
 };
