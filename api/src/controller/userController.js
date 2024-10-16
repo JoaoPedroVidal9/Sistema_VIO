@@ -48,48 +48,85 @@ module.exports = class userController {
   }
 
   static async getAllUsers(req, res) {
-    return res.status(200).json({ message: "Obtendo todos os usuários" });
+    const query = `SELECT * FROM usuario`;
+
+    try {
+      connect.query(query, function (err, results) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Erro Interno do Servidor" });
+        }
+        return res
+          .status(200)
+          .json({
+            message: "Mostrando usuários: ",
+            users: results,
+          });
+      });
+    } catch (error) {
+      console.error("Erro ao executar a consulta:", error);
+      return res.status(500).json({ error: "Um erro foi encontrado." });
+    }
   }
 
   static async updateUser(req, res) {
     //Desestrutura e recupera os dados enviados via corpo da requisição
-    const { cpf, email, password, name } = req.body;
+    const { cpf, email, password, name, id} = req.body;
     //Validar se todos os campos foram preenchidos
-    if (!cpf || !email || !password || !name) {
+    if (!cpf || !email || !password || !name || !id) {
       return res
         .status(400)
         .json({ error: "Todos os campos devem ser preenchidos" });
     }
-    //Procurar o indice do usuario no Array 'users' pelo cpf
-    const userIndex = users.findIndex((user) => user.cpf === cpf);
-    //Se o usuario não for encontrado userIndex se torna -1
-    if (userIndex === -1) {
-      return res.status(400).json({ error: "Usuário não encontrado" });
+    const query = `UPDATE usuario SET name=?, email=?, password=?, cpf=? WHERE id_usuario = ?`;
+    const values = [name, email, password, cpf, id];
+    try {
+      connect.query(query, values, function (err, results) {
+        if (err) {
+          if (err.code === "ER_DUP_ENTRY") {
+            return res
+              .status(400)
+              .json({ error: "E-mail já cadastrado por outro usuário." });
+          } else {
+            console.error(err);
+            return res.status(500).json({ error: "Erro Interno do Servidor" });
+          }
+        }
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+        return res
+          .status(200)
+          .json({ message: "Usuário atualizado com sucesso." });
+      });
+    } catch (error) {
+      console.error("Erro ao executar a consulta:", error);
+      return res.status(500).json({ error: "Erro Interno de Servidor" });
     }
 
-    //Atualiza os dados do usuario no Array 'users' de index userIndex
-    users[userIndex] = { cpf, email, password, name };
-
-    //Mensagem para o usuario
-    return res
-      .status(200)
-      .json({ message: "Usuário atualizado", user: users[userIndex] });
   }
 
   static async deleteUser(req, res) {
-    //Obtem o parametro Id da requisição, que é o cpf do user a ser deletado
-    const userId = req.params.cpf;
+    const userId = req.params.id;
 
-    //Procurar o indice do usuario no Array 'users' pelo parametro(cpf)
-    const userDeleted = users.findIndex((user) => user.cpf === userId);
-    //Se o usuario não for encontrado userDeleted se torna -1
-    if (userDeleted === -1) {
-      return res.status(400).json({ error: "Usuário não encontrado" });
+    const query = `DELETE FROM usuario WHERE id_usuario = ?`;
+    const values = [userId];
+    try {
+      connect.query(query, values, function (err, results) {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Erro Interno do Servidor" });
+        }
+        if (results.affectedRows === 0) {
+          return res.status(404).json({ error: "Usuário não encontrado." });
+        }
+        return res
+          .status(200)
+          .json({ message: "Usuário excluído com sucesso." });
+      });
+    } catch (error) {
+      console.error("Erro ao executar a consulta:", error);
+      return res.status(500).json({ error: "Erro Interno de Servidor" });
     }
-
-    //Removendo o usuario do Array 'users'
-    users.splice(userDeleted, 1);
-
-    return res.status(200).json({ message: "Usuário deletado com sucesso" });
   }
 };
