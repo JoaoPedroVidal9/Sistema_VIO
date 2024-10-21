@@ -1,5 +1,10 @@
 // Seleciona o elemento com o id indicado (do formulário) e Adiciona o ouvinte de evento (submit) para capturar o envio do formulário
-document.getElementById("formulario_registro").addEventListener("submit", createUser);
+document
+  .getElementById("formulario_registro")
+  .addEventListener("submit", createUser);
+
+  document.addEventListener("DOMContentLoaded", getAllUsers)
+
 function createUser(event) {
   // Previne o comportamento padrão do formulário, ou seja, impede que ele seja enviado e recarregue a página
   event.preventDefault();
@@ -10,7 +15,7 @@ function createUser(event) {
   const password = document.getElementById("senha").value;
 
   // Requisição HTTP para o endpoint de cadastro de usuário
-  fetch("http://10.89.240.145:5000/api/v1/user/", {
+  fetch("http://10.89.240.105:5000/api/v1/user/", {
     // Realiza uma chamada HTTP para o servidor (a rota definida)
     method: "POST",
     headers: {
@@ -49,4 +54,35 @@ function createUser(event) {
 
       console.error("Erro:", error.message);
     });
+}
+
+function getAllUsers(event) {
+  fetch("http://10.89.240.105:5000/api/v1/user/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((response) => {
+    if(response.ok){
+      return response.json();
+    }
+    return response.json().then((err) =>{
+      throw new Error(err.error);
+    });
+  })
+      .then((data) =>{
+        const userlist = document.getElementById("userlist")
+        userlist.innerHTML = "";
+
+        data.users.forEach((user) =>{
+          const listItem = document.createElement("li");
+          listItem.textContent = `Nome: ${user.name}, CPF: ${user.cpf}, Email: ${user.email}`
+          userlist.appendChild(listItem)
+        })
+      })
+      .catch((error) =>{
+        alert("Erro ao obter usuários" + error.message)
+        console.log("Erro:", error.message)
+      })
 }

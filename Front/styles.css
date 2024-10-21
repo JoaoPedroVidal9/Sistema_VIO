@@ -114,3 +114,22 @@ footer {
   position: absolute; /* Posiciona o rodapé de forma absoluta */
   bottom: 0; /* Posiciona o rodapé na parte inferior da página */
 }
+
+#userlist {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: blanchedalmond;
+  border-radius: 15px;
+  color: rgb(126, 15, 15);
+
+}
+#userlist li{
+  padding: 1%;
+  margin-bottom: 2%;
+  list-style-type:none;
+  border: solid 2px  rgb(126, 15, 15);
+  border-width: 100%;
+  border-radius: 15px;
+}
