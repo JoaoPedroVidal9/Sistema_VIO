@@ -18,9 +18,7 @@
         <!-- Logo do site inserida com a tag <img>, que exibe uma imagem -->
         <img src="ingresso.png" alt="Logo do site" />
         <!-- Título principal do site, exibido dentro do cabeçalho -->
-        <h1>
-          IngressosFácil
-        </h1>
+        <h1>IngressosFácil</h1>
       </div>
       <!-- Parágrafo abaixo do título, dando uma breve descrição do site -->
       <p>Compre seus ingressos com facilidade</p>
@@ -31,7 +29,7 @@
           <li><a href="#home">Início</a></li>
           <li><a href="#eventos">Eventos</a></li>
           <li><a href="#sobre">Sobre Nós</a></li>
-          <li><a href="#contato">Contato</a></li>
+          <li><a href="#user-table">Contato</a></li>
         </ul>
       </nav>
       <button class="botao_header" onclick="window.location.href='index.html'">
@@ -41,9 +39,7 @@
 
     <!-- Conteúdo principal da página, onde informações principais são exibidas -->
     <main>
-      <section id="home">
-        Cadastro
-      </section>
+      <section id="home">Cadastro</section>
       <section>
         <form id="formulario_registro">
           <!-- Entrada do nome -->
@@ -59,14 +55,45 @@
           <label for="senha">Senha:</label>
           <input type="password" id="senha" name="senha" required />
           <!-- Botão para enviar formulário -->
-          <input type="submit" value="Cadastrar"/>
+          <input type="submit" value="Cadastrar" />
         </form>
       </section>
 
+      <section>         
+        <h2>Usuários Cadastrados</h2>
+        <ul id="userlist"></ul>
+      </section>
+
       <section>
-        <!-- Lista para exibir os usuários cadastrados-->
-         <h2>Usuários Cadastrados</h2>
-         <ul id="userlist"></ul>
+        <h2>Usuários Cadastrados via Tabela</h2>
+        <div id="divTabela">
+        <table id="user-table">
+          <thead>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>E-mail</th>
+          </thead>
+          <tbody id="user-list-tabela">
+            <!-- Os usuários serão adicionados aqui-->
+          </tbody>
+        </table>
+      </div>
+      </section>
+
+      <section>
+        <h2>Organizadores Cadastrados via Tabela</h2>
+        <div id="divTabela">
+        <table id="org-table">
+          <thead>
+            <th>Nome</th>
+            <th>CPF</th>
+            <th>E-mail</th>
+          </thead>
+          <tbody id="org-list-tabela">
+            <!-- Os organizadores serão adicionados aqui-->
+          </tbody>
+        </table>
+      </div>
       </section>
     </main>
 
@@ -76,9 +103,9 @@
       <p>&copy; 2024 IngressosFácil - Todos os direitos reservados</p>
     </footer>
     <script>
-        function mostrarMsg(){
-            alert("Olá! Você clicou no botão!");
-        }
+      function mostrarMsg() {
+        alert("Olá! Você clicou no botão!");
+      }
     </script>
     <script src="app.js"></script>
   </body>
