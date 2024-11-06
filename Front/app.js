@@ -48,6 +48,7 @@ function createUser(event) {
       console.log(data.message);
 
       document.getElementById("formulario_registro").reset();
+      window.location.href = "cadastro.html"
     })
     .catch((error) => {
       // Captura qualquer erro que ocorra durante o processo de requisição/resposta

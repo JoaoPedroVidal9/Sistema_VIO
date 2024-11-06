@@ -44,13 +44,10 @@ module.exports = class eventoController {
         // Transformando a data no Horário de Greenwich(GMT), para Horário de Brasília (GMT-3)
         if (results[0]) {
           const dateAgora = new Date(results[0].data_hora);
-          console.log(results[0].data_hora);
-          console.log();
           console.log("Data:", dateAgora.toLocaleDateString(),"Horário:", dateAgora.toLocaleTimeString(),"Ambos:", dateAgora.toLocaleString());
           return res.status(200).json({
             message: "Mostrando eventos: ",
             eventos: results,
-            diahora: dateAgora,
           });
         }else{
         return res.status(200).json({
@@ -99,9 +96,8 @@ module.exports = class eventoController {
     const eventoId = req.params.id;
 
     const query = `DELETE FROM evento WHERE id_evento = ?`;
-    const values = [eventoId];
     try {
-      connect.query(query, values, function (err, results) {
+      connect.query(query, eventoId, function (err, results) {
         if (err) {
           console.error(err);
           return res.status(500).json({ error: "Erro Interno do Servidor" });
