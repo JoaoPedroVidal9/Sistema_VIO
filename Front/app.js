@@ -6,6 +6,7 @@ document
   document.addEventListener("DOMContentLoaded", getAllUsers)
   document.addEventListener("DOMContentLoaded", getAllUsersTable)
   document.addEventListener("DOMContentLoaded", getAllOrgsTable)
+  document.addEventListener("DOMContentLoaded", getEventosTable)
 
 function createUser(event) {
   // Previne o comportamento padrão do formulário, ou seja, impede que ele seja enviado e recarregue a página
@@ -17,7 +18,7 @@ function createUser(event) {
   const password = document.getElementById("senha").value;
 
   // Requisição HTTP para o endpoint de cadastro de usuário
-  fetch("http://10.89.240.3:5000/api/v1/user/", {
+  fetch("http://localhost:5000/api/v1/user/", {
     // Realiza uma chamada HTTP para o servidor (a rota definida)
     method: "POST",
     headers: {
@@ -59,7 +60,7 @@ function createUser(event) {
 }
 
 function getAllUsers() {
-  fetch("http://10.89.240.3:5000/api/v1/user/", {
+  fetch("http://localhost:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -90,7 +91,7 @@ function getAllUsers() {
 }
 
 function getAllUsersTable() {
-  fetch("http://10.89.240.3:5000/api/v1/user/", {
+  fetch("http://localhost:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -133,7 +134,7 @@ function getAllUsersTable() {
 }
 
 function getAllOrgsTable(){
-  fetch("http://10.89.240.3:5000/api/v1/organizador/", {
+  fetch("http://localhost:5000/api/v1/organizador/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -156,12 +157,15 @@ function getAllOrgsTable(){
           // Cria uma nova linha
           const tr = document.createElement("tr");
           // Cria células para Nome, CPF e E-mail
+
           const tdNome = document.createElement("td");
           tdNome.textContent = organizador.nome;
           tr.appendChild(tdNome);
+
           const tdFone = document.createElement("td");
           tdFone.textContent = organizador.telefone;
           tr.appendChild(tdFone);
+
           const tdEmail = document.createElement("td");
           tdEmail.textContent = organizador.email;
           tr.appendChild(tdEmail);
@@ -170,7 +174,61 @@ function getAllOrgsTable(){
         })
       })
       .catch((error) =>{
-        alert("Erro ao obter usuários: " + error.message);
+        alert("Erro ao obter organizadores: " + error.message);
+        console.error("Erro:", error.message)
+      })
+}
+
+function getEventosTable(){
+  fetch("http://localhost:5000/api/v1/evento/", {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then((response) => {
+    if(response.ok){
+      return response.json();
+    }
+    return response.json().then((err) =>{
+      throw new Error(err.error);
+    });
+  })
+      .then((data) =>{
+        const eventolist = document.getElementById("evento_tabela");
+        // Limpa a lista antes de adicionar novos itens
+        eventolist.innerHTML = "";
+        // Verifica se há eventos retornados e os adiciona a tabela
+        data.eventos.forEach((evento) =>{
+          // Cria uma nova linha
+          const tr = document.createElement("tr");
+
+          // Cria células para valores retornados
+          const tdNome = document.createElement("td");
+          tdNome.textContent = evento.nome;
+          tr.appendChild(tdNome);
+
+          const tdDesc = document.createElement("td");
+          tdDesc.textContent = evento.descricao;
+          tr.appendChild(tdDesc);
+
+          const tdData = document.createElement("td");
+          tdData.textContent = evento.data_hora;
+          tr.appendChild(tdData);
+
+          const tdLocal = document.createElement("td");
+          tdLocal.textContent = evento.local;
+          tr.appendChild(tdLocal);
+
+          const tdFKOrg = document.createElement("td");
+          tdFKOrg.textContent = evento.fk_id_organizador;
+          tr.appendChild(tdFKOrg);
+
+          eventolist.appendChild(tr);
+        })
+      })
+      .catch((error) =>{
+        alert("Erro ao obter eventos: " + error.message);
         console.error("Erro:", error.message)
       })
 }
