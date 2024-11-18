@@ -3,10 +3,10 @@ document
   .getElementById("formulario_registro")
   .addEventListener("submit", createUser);
 
-  document.addEventListener("DOMContentLoaded", getAllUsers)
+  // document.addEventListener("DOMContentLoaded", getAllUsers)
   document.addEventListener("DOMContentLoaded", getAllUsersTable)
   document.addEventListener("DOMContentLoaded", getAllOrgsTable)
-  document.addEventListener("DOMContentLoaded", getEventosTable)
+  // document.addEventListener("DOMContentLoaded", getEventosTable)
 
 function createUser(event) {
   // Previne o comportamento padrão do formulário, ou seja, impede que ele seja enviado e recarregue a página
@@ -18,7 +18,7 @@ function createUser(event) {
   const password = document.getElementById("senha").value;
 
   // Requisição HTTP para o endpoint de cadastro de usuário
-  fetch("http://localhost:5000/api/v1/user/", {
+  fetch("http://10.89.240.99:5000/api/v1/user/", {
     // Realiza uma chamada HTTP para o servidor (a rota definida)
     method: "POST",
     headers: {
@@ -61,7 +61,7 @@ function createUser(event) {
 }
 
 function getAllUsers() {
-  fetch("http://localhost:5000/api/v1/user/", {
+  fetch("http://10.89.240.99:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -86,13 +86,13 @@ function getAllUsers() {
         })
       })
       .catch((error) =>{
-        alert("Erro ao obter usuários" + error.message)
-        console.log("Erro:", error.message)
+        alert("Erro ao obter usuários: " + error.message)
+        console.log("Erro: ", error.message)
       })
 }
 
 function getAllUsersTable() {
-  fetch("http://localhost:5000/api/v1/user/", {
+  fetch("http://10.89.240.99:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -135,7 +135,7 @@ function getAllUsersTable() {
 }
 
 function getAllOrgsTable(){
-  fetch("http://localhost:5000/api/v1/organizador/", {
+  fetch("http://10.89.240.99:5000/api/v1/organizador/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -181,7 +181,7 @@ function getAllOrgsTable(){
 }
 
 function getEventosTable(){
-  fetch("http://localhost:5000/api/v1/evento/", {
+  fetch("http://10.89.240.99:5000/api/v1/evento/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

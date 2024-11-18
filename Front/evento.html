@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eventos</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <!-- Div usada para agrupar a logo e o título, facilitando o estilo com flexbox -->
+      <div class="logo">
+        <!-- Logo do site inserida com a tag <img>, que exibe uma imagem -->
+        <img src="ingresso.png" alt="Logo do site" />
+        <!-- Título principal do site, exibido dentro do cabeçalho -->
+        <h1>IngressosFácil</h1>
+      </div>
+      <!-- Parágrafo abaixo do título, dando uma breve descrição do site -->
+      <p>Compre seus ingressos com facilidade</p>
+      <!-- Menu de navegação que contém uma lista de links para diferentes seções da página -->
+      <nav>
+        <ul>
+          <!-- Cada link no menu, que direciona para uma seção específica da página -->
+          <li><a href="index.html">Home</a></li>
+          <li><a href="cadastro.html">Cadastre-se</a></li>
+          <li><a href="#sobre">Sobre Nós</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section>
+        <h1>Selecione uma data:</h1>
+      </section>
+
+      <section>
+        <form id="selecao_data">
+          <label for="data">Escolha uma data: </label>
+          <input
+            type="date"
+            id="data"
+            name="data"
+            min="2024-01-01"
+            max="2024-12-31"
+          />
+          <input value="Enviar" type="submit"/>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
