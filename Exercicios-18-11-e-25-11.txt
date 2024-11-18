@@ -1,0 +1,21 @@
+-- ex 1
+
+select e.nome as 'nome do evento', o.nome as 'nome do organizador'
+from evento e inner join organizador o
+on e.fk_id_organizador = o.id_organizador
+where e.data_hora > '2024-11-13 00:00:00'
+order by e.nome;
+
+-- ex 2
+
+select e.nome as 'nome do evento', i.tipo as 'tipo do ingresso', ic.quantidade, c.data_compra
+from evento e join ingresso i 
+on e.id_evento = i.fk_id_evento
+join ingresso_compra ic 
+on i.id_ingresso = ic.fk_id_ingresso
+join compra c
+on ic.fk_id_compra = c.id_compra
+where c.data_compra > '2023-12-31 00:00:00'
+order by e.nome;
+
+
