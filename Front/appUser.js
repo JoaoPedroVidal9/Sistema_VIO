@@ -16,9 +16,10 @@ function createUser(event) {
   const cpf = document.getElementById("cpf").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("senha").value;
+  const data_nascimento = document.getElementById("data").value;
 
   // Requisição HTTP para o endpoint de cadastro de usuário
-  fetch("http://10.89.240.99:5000/api/v1/user/", {
+  fetch("http://10.89.240.14:5000/api/v1/user/", {
     // Realiza uma chamada HTTP para o servidor (a rota definida)
     method: "POST",
     headers: {
@@ -26,7 +27,7 @@ function createUser(event) {
       "Content-Type": "application/json",
     },
     // Transforma os dados do formulário em uma string JSON para serem enviados no corpo da requisição
-    body: JSON.stringify({ name, cpf, password, email }),
+    body: JSON.stringify({ name, cpf, password, email, data_nascimento }),
   })
     .then((response) => {
       // Tratamento da resposta do servidor/API
@@ -61,7 +62,7 @@ function createUser(event) {
 }
 
 function getAllUsers() {
-  fetch("http://10.89.240.99:5000/api/v1/user/", {
+  fetch("http://10.89.240.14:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -92,7 +93,7 @@ function getAllUsers() {
 }
 
 function getAllUsersTable() {
-  fetch("http://10.89.240.99:5000/api/v1/user/", {
+  fetch("http://10.89.240.14:5000/api/v1/user/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -111,19 +112,22 @@ function getAllUsersTable() {
         // Limpa a lista antes de adicionar novos itens
         userlist.innerHTML = ""
         // Verifica se há usuários retornados e os adiciona a tabela
-        data.users.forEach((organizador) =>{
+        data.users.forEach((user) =>{
           // Cria uma nova linha
           const tr = document.createElement("tr");
           // Cria células para Nome, CPF e E-mail
           const tdNome = document.createElement("td");
-          tdNome.textContent = organizador.name;
+          tdNome.textContent = user.name;
           tr.appendChild(tdNome);
           const tdCpf = document.createElement("td");
-          tdCpf.textContent = organizador.cpf;
+          tdCpf.textContent = user.cpf;
           tr.appendChild(tdCpf);
           const tdEmail = document.createElement("td");
-          tdEmail.textContent = organizador.email;
+          tdEmail.textContent = user.email;
           tr.appendChild(tdEmail);
+          const tdData = document.createElement("td");
+          tdData.textContent = user.data_nascimento;
+          tr.appendChild(tdData);
 
           userlist.appendChild(tr);
         })
@@ -135,7 +139,7 @@ function getAllUsersTable() {
 }
 
 function getAllOrgsTable(){
-  fetch("http://10.89.240.99:5000/api/v1/organizador/", {
+  fetch("http://10.89.240.14:5000/api/v1/organizador/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -181,7 +185,7 @@ function getAllOrgsTable(){
 }
 
 function getEventosTable(){
-  fetch("http://10.89.240.99:5000/api/v1/evento/", {
+  fetch("http://10.89.240.14:5000/api/v1/evento/", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
