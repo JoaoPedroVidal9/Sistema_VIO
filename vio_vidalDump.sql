@@ -2,7 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `vio_vidal` /*!40100 DEFAULT CHARACTER SET utf8mb
 USE `vio_vidal`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: vio_vidal
+-- Host: localhost    Database: vio_vidal
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -190,6 +190,48 @@ LOCK TABLES `presenca` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `teste`
+--
+
+DROP TABLE IF EXISTS `teste`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `teste` (
+  `id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teste`
+--
+
+LOCK TABLES `teste` WRITE;
+/*!40000 ALTER TABLE `teste` DISABLE KEYS */;
+/*!40000 ALTER TABLE `teste` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `teste2`
+--
+
+DROP TABLE IF EXISTS `teste2`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `teste2` (
+  `id` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teste2`
+--
+
+LOCK TABLES `teste2` WRITE;
+/*!40000 ALTER TABLE `teste2` DISABLE KEYS */;
+/*!40000 ALTER TABLE `teste2` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `usuario`
 --
 
@@ -236,4 +278,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-02-19  9:20:44
+-- Dump completed on 2025-02-24 10:48:24

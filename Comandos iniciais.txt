@@ -1,12 +1,14 @@
 git config --global user.name JoaoPedroVidal9
 git config --global user.email jp.joaopedro.franc0@gmail.com
 
-create user 'vidal'@'localhost' identified by 'senai@604';
-create user 'bonini'@'localhost' identified by 'senai@604';
-create user 'negrijo'@'localhost' identified by 'senai@604';
-SET PASSWORD FOR 'vidal'@'localhost' = 'senai@604';
-SET PASSWORD FOR 'bonini'@'localhost' = 'senai@604';
-SET PASSWORD FOR 'negrijo'@'localhost' = 'senai@604';
+
+\sql
+\connect alunods@localhost:3306
+
+
+create user 'vidal'@'10.89.240.%' identified by 'senai@604';
+create user 'bonini'@'10.89.240.%' identified by 'senai@604';
+create user 'negrijo'@'10.89.240.%' identified by 'senai@604';
 grant all on *.* to 'vidal'@'localhost';
 grant all on *.* to 'bonini'@'localhost';
 grant all on *.* to 'negrijo'@'localhost';
