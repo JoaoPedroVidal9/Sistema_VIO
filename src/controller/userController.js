@@ -1,19 +1,15 @@
 const connect = require("../db/connect");
+const validateUser = require('../services/validateUser');
+const validateCpf = require('../services/validateCpf');
 module.exports = class userController {
   static async createUser(req, res) {
     const { cpf, email, password, name, data_nascimento} = req.body;
+    const validationError = validateUser(req.body);
 
-    if (!cpf || !email || !password || !name || !data_nascimento) {
-      return res
-        .status(400)
-        .json({ error: "Todos os campos devem ser preenchidos" });
-    } else if (isNaN(cpf) || cpf.length !== 11) {
-      return res.status(400).json({
-        error: "CPF inválido. Deve conter exatamente 11 dígitos numéricos",
-      });
-    } else if (!email.includes("@")) {
-      return res.status(400).json({ error: "Email inválido. Deve conter @" });
-    } else {
+    if(validationError){
+      return res.status(400).json(validationError)
+    }
+    const cpfValidation = await validateCpf(cpf, false);
       // Construção da query INSERT
       const query = `INSERT INTO usuario(name, cpf, email, password, data_nascimento) VALUES ('${name}', '${cpf}', '${email}', '${password}', '${data_nascimento}');`;
 
@@ -48,7 +44,6 @@ module.exports = class userController {
       } catch (error) {
         console.error(error);
         return res.status(500).json({ error: "Erro interno do servidor" });
-      }
     }
   }
 
@@ -106,12 +101,11 @@ module.exports = class userController {
   static async updateUser(req, res) {
     //Desestrutura e recupera os dados enviados via corpo da requisição
     const { cpf, email, password, name, id } = req.body;
-    //Validar se todos os campos foram preenchidos
-    if (!cpf || !email || !password || !name || !id) {
-      return res
-        .status(400)
-        .json({ error: "Todos os campos devem ser preenchidos" });
+    const validationError = validateUser(cpf, id);
+    if(validationError){
+      return res.status(400).json(validationError);
     }
+    const cpfValidation = await validateCpf(cpf, id);
     const query = `UPDATE usuario SET name=?, email=?, password=?, cpf=? WHERE id_usuario = ?`;
     const values = [name, email, password, cpf, id];
     try {
