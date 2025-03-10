@@ -3,47 +3,44 @@ const validateUser = require('../services/validateUser');
 const validateCpf = require('../services/validateCpf');
 module.exports = class userController {
   static async createUser(req, res) {
-    const { cpf, email, password, name, data_nascimento} = req.body;
+    const { cpf, email, password, name, data_nascimento } = req.body;
+
     const validationError = validateUser(req.body);
-
-    if(validationError){
-      return res.status(400).json(validationError)
+    if (validationError) {
+      return res.status(400).json(validationError);
     }
-    const cpfValidation = await validateCpf(cpf, false);
-      // Construção da query INSERT
-      const query = `INSERT INTO usuario(name, cpf, email, password, data_nascimento) VALUES ('${name}', '${cpf}', '${email}', '${password}', '${data_nascimento}');`;
 
-      // Executando a query INSERT
-      try {
-        connect.query(query, function (err) {
+    try {
+      const cpfError = await validateCpf(cpf);
+      if (cpfError) {
+        return res.status(400).json(cpfError);
+      }
+
+      const query = `INSERT INTO usuario (cpf, password, email, name, data_nascimento) VALUES (?, ?, ?, ?, ?)`;
+      connect.query(
+        query,
+        [cpf, password, email, name, data_nascimento],
+        (err) => {
           if (err) {
             console.log(err);
-            console.log(err.code);
             if (err.code === "ER_DUP_ENTRY") {
-              if(err.message.includes(`email`)){
-                return res
-                .status(400)
-                .json({ error: "O Email já está vinculado a outro usuário" });
-              }else{
-                return res
-                .status(400)
-                .json({ error: "O CPF já está vinculado a outro usuário" });
-              }
-             
-            } else {
+              console.log(err);
+              if (err.message.includes(`email`)) {
+                return res.status(400).json({ error: "Email já cadastrado" });
+              } 
+            }else {
               return res
                 .status(500)
-                .json({ error: "Erro Interno Do Servidor" });
+                .json({ error: "Erro interno do servidor", err });
             }
-          } else {
-            return res
-              .status(201)
-              .json({ message: "Usuário criado com sucesso" });
           }
-        });
-      } catch (error) {
-        console.error(error);
-        return res.status(500).json({ error: "Erro interno do servidor" });
+          return res
+            .status(201)
+            .json({ message: "Usuário criado com sucesso" });
+        }
+      );
+    } catch (error) {
+      return res.status(500).json({ error });
     }
   }
 
