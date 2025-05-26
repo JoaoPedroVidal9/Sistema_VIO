@@ -21,7 +21,7 @@ class AppController {
 
   routes() {
     const apiRoutes = require("./routes/apiRoutes");
-    this.express.use("/api/v1/", apiRoutes); // URL BASE <---------------
+    this.express.use("/api/v1/", apiRoutes); // URL BASE <- http://10.89.240.75:3307/api/v1/
   }
 }
 
