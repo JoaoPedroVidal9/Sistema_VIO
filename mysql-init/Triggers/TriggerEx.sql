@@ -1,3 +1,4 @@
+use vio_vidal;
 create table `resumo_evento` (
 id_evento int primary key,
 total_ingressos int);
