@@ -140,37 +140,47 @@ module.exports = class eventoController {
         );
         // Evento 1
         const dataEvento = new Date(results[0].data_hora);
-        console.log(dataEvento)
+        console.log(dataEvento);
         const dia = dataEvento.getDate();
-        const mes = dataEvento.getMonth()+1;
+        const mes = dataEvento.getMonth() + 1;
         const ano = dataEvento.getFullYear();
         console.log(
           "Nome do Evento: ",
           results[0].nome,
           ", Data:",
-          dia+
-          "/"+
-          mes+
-          "/"+
-          ano
+          dia + "/" + mes + "/" + ano
         );
 
-        const diferencaMs = eventosFuturos[0].data_hora.getTime() - now.getTime();
+        const diferencaMs =
+          eventosFuturos[0].data_hora.getTime() - now.getTime();
         console.log(diferencaMs);
-        const dias = Math.floor(diferencaMs /1000/60/60/24);
-        const horas = Math.floor(diferencaMs%(1000*60*60*24)/(1000*60*60) )
-        console.log("Faltam",dias,"dias e", horas,"horas para o Evento",eventosFuturos[0].nome);
-        
+        const dias = Math.floor(diferencaMs / 1000 / 60 / 60 / 24);
+        const horas = Math.floor(
+          (diferencaMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        console.log(
+          "Faltam",
+          dias,
+          "dias e",
+          horas,
+          "horas para o Evento",
+          eventosFuturos[0].nome
+        );
+
         //comparando datas
-        const dataFiltro = new Date('2024-12-15').toISOString();
-        const eventosDia = results.filter(evento => new Date(evento.data_hora.toISOString().split('T')[0] === dataFiltro[0]));
+        const dataFiltro = new Date("2024-12-15").toISOString();
+        const eventosDia = results.filter(
+          (evento) =>
+            new Date(
+              evento.data_hora.toISOString().split("T")[0] === dataFiltro[0]
+            )
+        );
         console.log(eventosDia);
-        console.log("dataFiltro:",dataFiltro);
+        console.log("dataFiltro:", dataFiltro);
 
-        const dataSplit = dataFiltro.split('T');
+        const dataSplit = dataFiltro.split("T");
 
-        console.log("dataSplit:",dataSplit)
-
+        console.log("dataSplit:", dataSplit);
 
         return res.status(200).json({ message: "ok" });
       });
@@ -182,25 +192,23 @@ module.exports = class eventoController {
 
   static async getEventosSemana(req, res) {
     let diaInicio = req.params.data;
-    diaInicio = new Date(diaInicio).toISOString().split('T')[0];
+    diaInicio = new Date(diaInicio).toISOString().split("T")[0];
 
-    const query = `SELECT * FROM evento WHERE TIMESTAMPDIFF(DAY, ?, data_hora) BETWEEN 0 AND 6 ORDER BY data_hora ASC`
+    const query = `SELECT * FROM evento WHERE TIMESTAMPDIFF(DAY, ?, data_hora) BETWEEN 0 AND 6 ORDER BY data_hora ASC`;
 
-    try{
-      connect.query(query, diaInicio, (err, results)=>{
-        if(err){
-          console.error(err)
-          return res.status(500).json({error:"Erro Interno de Servidor"})
+    try {
+      connect.query(query, diaInicio, (err, results) => {
+        if (err) {
+          console.error(err);
+          return res.status(500).json({ error: "Erro Interno de Servidor" });
         }
-        return res.status(200).json({message:"Busca concluida:", eventos:results})
-      })
-    }catch(error){
+        return res
+          .status(200)
+          .json({ message: "Busca concluida:", eventos: results });
+      });
+    } catch (error) {
       console.error(error);
-      return res.status(500).json({error:"Erro Interno de Servidor"});
+      return res.status(500).json({ error: "Erro Interno de Servidor" });
     }
-
-
-
-
   }
 };
