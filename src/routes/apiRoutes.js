@@ -25,6 +25,7 @@ router.put("/evento/", eventoController.updateEvento);
 router.delete("/evento/:id",eventoController.deleteEvento);
 router.get("/evento/data", verifyJWT, eventoController.getEventosPorData);
 router.get("/evento/semana/:data", verifyJWT, eventoController.getEventosSemana);
+router.get("/evento/img/:id", eventoController.getImagemEvento);
 
 const ingressoController = require("../controller/ingressoController");
 

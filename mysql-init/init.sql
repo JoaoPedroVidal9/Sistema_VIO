@@ -91,3 +91,4 @@ create table presenca(
 );
 
 ALTER TABLE evento ADD imagem LONGBLOB;
+ALTER TABLE evento ADD tipoImagem VARCHAR(100);
